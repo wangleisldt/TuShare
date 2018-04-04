@@ -44,5 +44,15 @@ def save_file_dataframe_to_execl(dirname,filename,df):
         print("%s  保存文件成功。" % (full_filename))
 
 
-
-
+#################################################
+#   扫描目录，返回文件名称List
+#################################################
+def file_List_Func(Path):
+    fileList = []
+    for file in os.listdir(Path):
+        file_path = os.path.join(Path, file)
+        if os.path.isdir(file_path):
+            pass
+        else:
+            fileList.append(file)
+    return fileList
