@@ -1,7 +1,7 @@
 # encoding:utf-8
 import sys
 
-GLOBAL_PATH = 'C:\量化'
+GLOBAL_PATH = 'C:\\量化'
 SEPARATOR = "\\"
 Execl = ".xlsx"
 PklFile = ".pkl"
@@ -38,6 +38,8 @@ Hfq = "hfq"
 RealtimeQuotesData = "实时行情"
 StockRealtimeQuotesDataFilename = "StockRealtimeQuotes"
 
+
+AfterFinishingData = "整理后的数据目录"
 
 ###################################################################
 

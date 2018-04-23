@@ -56,3 +56,11 @@ def file_List_Func(Path):
         else:
             fileList.append(file)
     return fileList
+
+#################################################
+#   根据文件名称，分别获取 股票代码，年份，季度   文件每次例如 603985-2017-3.xlsx
+#################################################
+def from_filename_get_info(filename):
+    return filename.split('.')[0].split('-')
+
+
