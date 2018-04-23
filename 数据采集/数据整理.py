@@ -55,6 +55,7 @@ def 整理某个季度的基本面数据(指标名称,年份,季度):
 if __name__ == '__main__':
     filename = 整理某个季度的基本面数据("财务指标", "2017", "3")
 
+    print(filename)
     pklFile = open(filename, 'rb')
     aaa = pickle.load(pklFile)
     pklFile.close()
