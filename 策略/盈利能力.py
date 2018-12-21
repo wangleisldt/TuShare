@@ -212,8 +212,9 @@ if __name__ == '__main__':
     #获取股票清单列表
     stockIdListInstance = sd.StockDict()
     # 对这批股票清单进行处理，季度
-    growthAbilityListInstance = GrowthPolicy( StockIdList=stockIdListInstance.stockIdList , Year="2017", Length=8, Quarter="4" ,Type = "Quator")
-
+    #growthAbilityListInstance = GrowthPolicy( StockIdList=stockIdListInstance.stockIdList , Year="2017", Length=8, Quarter="4" ,Type = "Quator")
+    growthAbilityListInstance = GrowthPolicy(StockIdList=stockIdListInstance.stockIdList, Year="2018", Length=8,
+                                             Quarter="1", Type="Quator")
 
     # 对这批股票清单进行处理，年度
     #growthAbilityListInstance = GrowthPolicy(StockIdList=stockIdListInstance.stockIdList, Year="2017", Length=8,Quarter="2", Type="Year")
@@ -221,5 +222,5 @@ if __name__ == '__main__':
     aa = growthAbilityListInstance.GrowthAbilityCalculate()
 
 
-    aa.to_excel("c:\\盈利能力结果.xlsx")
+    aa.to_excel("c:\\盈利能力结果2018-01.xlsx")
 
