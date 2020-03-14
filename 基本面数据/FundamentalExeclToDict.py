@@ -45,6 +45,7 @@ class FundamentalExeclToDict:
             cols = sheet.ncols
             for i in range(rows):
                 if i != 0 :
+
                     list = []
                     dict = {}
                     for j in range(cols):

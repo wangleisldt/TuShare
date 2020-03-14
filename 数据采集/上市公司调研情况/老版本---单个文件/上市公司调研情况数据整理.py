@@ -25,13 +25,13 @@ class 上市公司调研情况月度数据处理():
             self.base_dir_name, pf.SEPARATOR, pf.投资者关系活动记录表, pf.SEPARATOR, pf.展现数据, pf.SEPARATOR)
 
     def 数据汇总_步骤一(self):
-        writer = pd.ExcelWriter(self.dirname_单个汇总 + pf.投资者关系活动记录表 + pf.单个汇总 + pf.Execl)  # 产生保存文件
-
-        dict_df_步骤一 = pd.read_excel(self.dirname_原始 + pf.投资者关系活动记录表 +pf.Execl, sheet_name=None,
-                                    converters={0: str})  # 将其转换为字符串，这样就比较好处理
-        for k, v in dict_df_步骤一.items():
-            df = v
-
+        # 打开根据年月打开目录读取里面的文件
+        fileList = file_List_Func(self.dirname_原始)
+        for filename in fileList:
+            print("开始预处理汇总文件：" + filename)
+            excel_path = self.dirname_原始 + filename
+            # d = pd.read_excel(excel_path,converters={'股票代码':str},convert_float = False,thousands= 'string',encoding='utf-8')
+            df = pd.read_excel(excel_path, converters={0: str})  # 将其转换为字符串，这样就比较好处理
 
             '''
             #a = df.str.startwith('2018-07')
@@ -108,28 +108,26 @@ class 上市公司调研情况月度数据处理():
             # print(df)
             df.columns = [0, 1, 2, 3]
 
-            #print(df)
-            print("汇总了%s。" % k)
+            # print(df)
 
-            df.to_excel(writer, sheet_name=k)
+            # 根据list产生dataframe
+            excel_path = self.dirname_单个汇总 + filename
 
-        writer.save()
-        writer.close()
+            df.to_excel(excel_path)
+
         print("结束预处理汇总。")
 
     def 数据汇总_步骤二(self, year_month):
-        dict_df_步骤二 = pd.read_excel(self.dirname_单个汇总 + pf.投资者关系活动记录表 + pf.单个汇总 + pf.Execl, sheet_name=None,
-                                    converters={0: str})  # 将其转换为字符串，这样就比较好处理
-
-
-
         # 输出的list
         output_list = []
+        # 打开根据年月打开目录读取里面的文件
+        fileList = file_List_Func(self.dirname_单个汇总)
+        for filename in fileList:
+            print("开始汇总文件：" + filename)
+            excel_path = self.dirname_单个汇总 + filename
+            # d = pd.read_excel(excel_path,converters={'股票代码':str},convert_float = False,thousands= 'string',encoding='utf-8')
+            df = pd.read_excel(excel_path, converters={0: str})  # 将其转换为字符串，这样就比较好处理
 
-        for k, v in dict_df_步骤二.items():
-
-            print("开始汇总股票：%s" %  k)
-            df = v
             # print(df)
             # print(df.dtypes)
             year, month = str(year_month)[0:4], str(year_month)[4:6]
@@ -198,12 +196,10 @@ class 上市公司调研情况月度数据处理():
 
 if __name__ == '__main__':
     a = 上市公司调研情况月度数据处理()
-    a.数据汇总_步骤一()
+    # a.数据汇总_步骤一()
     # b = [201801,201802,201803,201804,201805,201806,201807,201808,201809,201810,201811]
     # for c in b:
     # a.数据汇总_步骤二(c)
-    #a.数据汇总_步骤二(201901)
-    #a.数据汇总_步骤二(201902)
-    #a.数据汇总_步骤二(201910)
-    #a.数据汇总_步骤二(201812)
+    a.数据汇总_步骤二(201811)
+    a.数据汇总_步骤二(201812)
     # a.数据展示(201501,12)

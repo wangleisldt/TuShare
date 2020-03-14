@@ -30,6 +30,8 @@ class StockDict:
 
 if __name__ == '__main__':
     aa = StockDict()
+    #print(aa.stockDict["timeToMarket"])
+    #print(aa.stockDict)
     for stockId in aa.stockDict["timeToMarket"]:
         print(stockId,aa.stockDict["timeToMarket"][stockId])
 

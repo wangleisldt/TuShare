@@ -29,6 +29,21 @@ StockListFilename = "stocklist"
 #交易数据目录常量
 TransactionData = "交易数据"
 
+#投资者关系活动记录表
+投资者关系活动记录表="投资者关系活动记录表"
+原始数据 = "原始数据"
+汇总数据 = "汇总数据"
+展现数据 = "展现数据"
+单个汇总 = "单个汇总"
+要去除的字符串组 = ['参与单位','人员姓名','□','√','对象调研','现场参观']
+
+#沪深港通持股
+沪深港通持股 = '沪深港通持股'
+步骤一 = '步骤一'
+步骤二 = '步骤二'
+步骤三 = '步骤三'
+步骤四 = '步骤四'
+
 HistoryData = "历史行情"
 RehabilitationOfHistoricalData = "复权数据"
 Qfq = "qfq"
@@ -40,6 +55,7 @@ StockRealtimeQuotesDataFilename = "StockRealtimeQuotes"
 
 
 AfterFinishingData = "整理后的数据目录"
+
 
 ###################################################################
 

@@ -9,40 +9,14 @@ from pandas.compat import StringIO
 import pandas as pd
 
 from 函数目录 import profile as ct
-
-from 函数目录 import date
-
-from 函数目录.function import save_file_dataframe_to_execl
-
 from 数据采集.股票清单.股票清单获取 import StockDict
 
-from 函数目录.function import check_file_exist
+from multiprocessing import Pool
 
 
-def 获取_现金流量表(year, quarter ,stockId):
-    """
-        获取业绩报表数据
-    Parameters
-    --------
-    year:int 年度 e.g:2014
-    quarter:int 季度 :1、2、3、4，只能输入这4个季度
-       说明：由于是从网站获取的数据，需要一页页抓取，速度取决于您当前网络速度
+def 获取_公司利润表(list):
+    year, quarter, stockId = list[0], list[1], list[2]
 
-    Return
-    --------
-    DataFrame
-        code,代码
-        name,名称
-        eps,每股收益
-        eps_yoy,每股收益同比(%)
-        bvps,每股净资产
-        roe,净资产收益率(%)
-        epcf,每股现金流量(元)
-        net_profits,净利润(万元)
-        profits_yoy,净利润同比(%)
-        distrib,分配方案
-        report_date,发布日期
-    """
     def process_dataframe(df):
         for i in range(0, len(df.columns)):
             date = str(year) + ct.End_OF_SEASON_DAY[quarter]
@@ -55,7 +29,9 @@ def 获取_现金流量表(year, quarter ,stockId):
 
     if ct._check_input(year, quarter ) is True:
         #ct._write_head()
-        df = _获取_现金流量表(year, quarter,stockId, 1, pd.DataFrame())
+        #print(year, quarter,stockId)
+        df = _获取_公司利润表(year, quarter,stockId, 1, pd.DataFrame())
+        #print(df)
         if df is not None:
             return process_dataframe(df)
         else:
@@ -63,12 +39,12 @@ def 获取_现金流量表(year, quarter ,stockId):
 
 
 
-def _获取_现金流量表(year, quarter, stockId , pageNo, dataArr, retry_count=3, pause=0.001):
+def _获取_公司利润表(year, quarter, stockId , pageNo, dataArr, retry_count=3, pause=0.001):
     #ct._write_console()
     for _ in range(retry_count):
         time.sleep(pause)
         try:
-            request = Request(ct.现金流量表_URL % (ct.P_TYPE['http'], stockId , year, 4 ))
+            request = Request(ct.公司利润表_URL % (ct.P_TYPE['http'], stockId , year, 4 ))
             #print(ct.财务指标_URL % (ct.P_TYPE['http'], stockId , year, 4 ))
             text = urlopen(request, timeout=10).read()
             text = text.decode('GBK')
@@ -80,17 +56,40 @@ def _获取_现金流量表(year, quarter, stockId , pageNo, dataArr, retry_coun
             sarr = ''.join(sarr)
             sarr = '<table>%s</table>' % sarr
             df = pd.read_html(sarr)[0]
+            print(stockId)
             return df
         except Exception as e:
             pass
             #print('获取财务数据出错。')
     #raise IOError(ct.NETWORK_URL_ERROR_MSG)
 
+def 获取_全量股票_公司利润表_某个季度(year,quarter):
+    '''def square(x):  # 计算平方数
+        return x ** 2
 
-def 获取_全量股票_现金流量表_某个季度(year,quarter):
+    a = map(square, [1, 2, 3, 4, 5])
 
-    dirname = ct.GLOBAL_PATH + ct.SEPARATOR + ct.FUNDAMENTAL_DATA + ct.SEPARATOR + ct.CashFlowSheet + ct.SEPARATOR
 
+    for e in a:
+        print(e)
+
+    print(a)
+
+    pool = Pool()
+    a = pool.map(获取_公司利润表, [[2018, 4, '600001']])
+    pool.close()
+    pool.join()
+    print(a)
+
+    return
+
+
+    df = 获取_公司利润表([2018, 4, '600001'])
+    print(df)
+
+    return
+'''
+    dirname = ct.GLOBAL_PATH + ct.SEPARATOR + ct.FUNDAMENTAL_DATA + ct.SEPARATOR + ct.CompanyProfitStatement + ct.SEPARATOR
     filename = "%s-%s.xlsx" % (year, quarter)
 
     writer = pd.ExcelWriter(dirname + filename)  # 产生保存文件
@@ -100,6 +99,23 @@ def 获取_全量股票_现金流量表_某个季度(year,quarter):
     count = 0
     sleep_stock_num = 500
     sleep_sec = 5
+
+    #list = []
+    #for e in stockListInstance.stockIdList:
+        #tmplist = [year,quarter,e]
+        #list.append(tmplist)
+
+    list = [[2018, 4, '000001'],[2018, 4, '000004'],[2018, 4, '000008']]
+
+    pool = Pool(16)
+    a = pool.map(获取_公司利润表, list)
+    pool.close()
+    pool.join()
+
+    for e in a:
+        print(e)
+
+    return
 
     for element in stockListInstance.stockIdList:
         if count == sleep_stock_num:
@@ -111,9 +127,9 @@ def 获取_全量股票_现金流量表_某个季度(year,quarter):
 
         try:
 
-            print("开始获取%s股票的%s年%s季度的--现金流量表--数据。" % (element, year, quarter))
+            print("开始获取%s股票的%s年%s季度的--公司利润表--数据。" % (element, year, quarter))
 
-            df = 获取_现金流量表(year, quarter, element)
+            df = 获取_公司利润表([year, quarter, element])
             if df is not None:
                 df.to_excel(writer, sheet_name=element)
             else:
@@ -122,19 +138,19 @@ def 获取_全量股票_现金流量表_某个季度(year,quarter):
         except:
             print("获取%s失败################################################" % element)
 
+    return
+
     writer.save()
     writer.close()
 
-
-
-
 if __name__ == '__main__':
-
-
     ##################################
     #  一般使用下面的函数
     ##################################
 
 
-    获取_全量股票_现金流量表_某个季度(2017,3)
+    获取_全量股票_公司利润表_某个季度(2010, 4)
+    #获取_全量股票_公司利润表_某个季度(2017, 3)
+    #获取_全量股票_公司利润表_某个季度(2017, 2)
+    #获取_全量股票_公司利润表_某个季度(2017, 1)
 

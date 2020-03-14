@@ -122,6 +122,19 @@ def get_1_quarter_before(year,quarter):
         quarter = quarter - 1
     return year,quarter
 
+#################################################
+# 给定一天，计算后几天
+# 入参 日期  20151231
+# 入参 增加几天  1
+# 返回 20160101
+#################################################
+def 后几天(date,add_day):
+    date_time = "%s %s" % (date,"00:00:00")
+    d1 = datetime.datetime.strptime(date_time, '%Y%m%d %H:%M:%S')
+    delta = datetime.timedelta(days=add_day)
+    n_days = d1 + delta
+    return str(n_days.strftime('%Y%m%d'))
+
 if __name__ == '__main__':
     print(getCurrentYear(),getCurrentMonth(),getCurrentQuarter())
     print(getCurrentQuarterList())
@@ -129,6 +142,7 @@ if __name__ == '__main__':
     print(getYearLength("20160831"))
     print(getYearQuarterMinusQuarter("2017","3",6))
     print(getYearMonthFromMonthLength("201503",34))
+    print(后几天("20181231",2))
 
 
 

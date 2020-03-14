@@ -1,0 +1,4 @@
+pip install pdfminer3k
+pip install jieba
+pip install python-docx
+pip install pywin32

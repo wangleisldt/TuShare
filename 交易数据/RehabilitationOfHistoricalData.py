@@ -95,7 +95,8 @@ class RehabilitationOfHistoricalData:
 #################################################
 def getStockAllData():
     instanceStockDict = sd.StockDict()
-    for stockId in instanceStockDict.stockDict["timeToMarket"]:
+    for stockId in sorted(instanceStockDict.stockDict["timeToMarket"].keys()):#对股票代码进行排序，下面那句不排序
+    #for stockId in instanceStockDict.stockDict["timeToMarket"]:
         yearAndLength = date.getYearLength(str(instanceStockDict.stockDict["timeToMarket"][stockId]))
         if yearAndLength[0]:
             aa = RehabilitationOfHistoricalData(StockNumber = stockId)
@@ -110,7 +111,8 @@ def getStockYearData(year,qfq=False):
     instanceStockDict = sd.StockDict()
 
     aa = RehabilitationOfHistoricalData(StockNumber="", QFQ=qfq,YEAR=str(year) )
-    for stockId in instanceStockDict.stockDict["timeToMarket"]:
+    for stockId in sorted(instanceStockDict.stockDict["timeToMarket"].keys()):  # 对股票代码进行排序，下面那句不排序
+    #for stockId in instanceStockDict.stockDict["timeToMarket"]:
         aa.StockNumber = stockId
         aa.getHistoricalDataYear()
 

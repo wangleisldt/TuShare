@@ -14,6 +14,9 @@ def getStockList():
         data = ts.get_stock_basics()
         #转换为字典
         stockDict = data.to_dict()
+        data = data.sort_index(axis=0)#对数据进行排序
+        #print(data)
+
 
         checkAndCreateDir(StockListDir)
 

@@ -87,69 +87,46 @@ def _获取_财务指标(year, quarter, stockId , pageNo, dataArr, retry_count=3
     #raise IOError(ct.NETWORK_URL_ERROR_MSG)
 
 
-def 获取_全量_财务指标(stockId):
-    year,quarter = date.get_current_2_quarter_before()
-    number_of_none = 0
-
-    while number_of_none < 5 and year >= 1994 :
-        print("开始获取%s股票的%s年%s季度的数据。" % (stockId,year, quarter))
-        year,quarter = date.get_1_quarter_before(year,quarter)
-        df = 获取_财务指标(year, quarter, stockId)
-        if df is not None:
-            number_of_none = 0
-            success_year, success_quarter = year, quarter
-            #print(df)
-
-            #保存文件部分
-            try:
-                dirname = ct.GLOBAL_PATH + ct.SEPARATOR + ct.FUNDAMENTAL_DATA + ct.SEPARATOR + ct.FinancialIndex + ct.SEPARATOR + str(year)
-                filename = "%s-%s-%s.xlsx" % (stockId,year,quarter)
-                save_file_dataframe_to_execl(dirname, filename, df)
-                print('已获得,保存文件成功')
-            except:
-                print('已获得,保存文件出错')
-        else:
-            print("未获得")
-            number_of_none = number_of_none + 1
-
-    return stockId,success_year,success_quarter
-
-def 获取_全量股票_财务指标():
-    sd_instance = StockDict()
-
-    for element in sd_instance.stockIdList:
-        获取_全量_财务指标(element)
 
 def 获取_全量股票_财务指标_某个季度(year,quarter):
-    sd_instance = StockDict()
-    stock_list = sd_instance.stockIdList
-    #stock_list.sort()
 
-    for element in stock_list:
-        print("开始获取%s股票的%s年%s季度的数据。" % (element, year, quarter))
+    dirname = ct.GLOBAL_PATH + ct.SEPARATOR + ct.FUNDAMENTAL_DATA + ct.SEPARATOR + ct.FinancialIndex + ct.SEPARATOR
 
-        dirname = ct.GLOBAL_PATH + ct.SEPARATOR + ct.FUNDAMENTAL_DATA + ct.SEPARATOR + ct.FinancialIndex + ct.SEPARATOR + str(
-            year)
-        filename = "%s-%s-%s.xlsx" % (element, year, quarter)
+    filename = "%s-%s.xlsx" % (year, quarter)
 
-        if check_file_exist(dirname,filename):
-            print("已获取过")
+    writer = pd.ExcelWriter(dirname + filename)  # 产生保存文件
+    # 初始化全部股票代码
+    stockListInstance = StockDict()
+    # 对每个股票代码进行处理
+    count = 0
+    sleep_stock_num = 500
+    sleep_sec = 5
+
+    for element in stockListInstance.stockIdList:
+        if count == sleep_stock_num:
+            print('网页查询了%s个股票等待%s秒！' % (sleep_stock_num, sleep_sec))
+            time.sleep(sleep_sec)
+            count = 0
         else:
+            count = count + 1
+
+        try:
+
+            print("开始获取%s股票的%s年%s季度的--财务指标--数据。" % (element, year, quarter))
+
             df = 获取_财务指标(year, quarter, element)
             if df is not None:
-                success_year, success_quarter = year, quarter
-                # 保存文件部分
-                try:
-                    save_file_dataframe_to_execl(dirname, filename, df)
-                    print('已获得,保存文件成功')
-                except:
-                    print('已获得,保存文件出错')
+                df.to_excel(writer, sheet_name=element)
             else:
-                print("未获得")
+                print("%s无相关数据。" % element)
 
-def 获取_全量股票_财务指标_某个季度_并行(year,quarter):
-    sd_instance = StockDict()
-    stock_list = sd_instance.stockIdList
+        except:
+            print("获取%s失败################################################" % element)
+
+    writer.save()
+    writer.close()
+
+
 
 if __name__ == '__main__':
     #df = 获取_财务指标(2016,2 , 601006)

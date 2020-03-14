@@ -64,3 +64,23 @@ def from_filename_get_info(filename):
     return filename.split('.')[0].split('-')
 
 
+#################################################
+#   根据文件名称获取前缀与后缀
+#################################################
+def 获取文件名前缀与后缀(filename):
+    list = filename.split('.')
+    return list[0],list[1]
+
+#################################################
+#   将obj保存为pkl文件
+#################################################
+def save_pkl_obj(obj, name):
+    with open(name , 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+
+#################################################
+#   将读取pkl文件
+#################################################
+def load_pkl_obj(name):
+    with open(name , 'rb') as f:
+        return pickle.load(f)

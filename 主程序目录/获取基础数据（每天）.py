@@ -11,10 +11,10 @@ if __name__ == '__main__':
     gplist.getStockList()
 
     #获取股票实时行情
-    rt.getRealtimeQuotesDataToExecl()
+    #rt.getRealtimeQuotesDataToExecl()
 
     #基本面数据获取
     #根据年度来
     #jbmget.基本面数据获取(2017,2017)
     #根据季度来(2017年4季度)
-    jbmget.季度基本面数据获取(2017,4)
+    #jbmget.季度基本面数据获取(2019,3)
