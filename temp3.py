@@ -100,7 +100,7 @@ def 计算偏差(dict):
     #print(result_list)
     return sum(result_list)
 #sdfsdf
-#sdf
+#sdfsd
 
 
 if __name__ == '__main__':
