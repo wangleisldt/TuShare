@@ -99,6 +99,7 @@ def 计算偏差(dict):
     #return int(np.var(result_list)),int(np.std(result_list,ddof=1))
     #print(result_list)
     return sum(result_list)
+#sdfsdf
 #sdf
 
 
